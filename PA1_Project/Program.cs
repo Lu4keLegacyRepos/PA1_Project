@@ -25,10 +25,11 @@ namespace PA1_Project
                 { -4, -2, 8 } };
             lu.ComputeDecomposition(mat2print, 3);
             lu.PrintLU();
-            Console.WriteLine("\n\n Compare Seq & Parallel for random matrix 1000x1000");
+
 
             Random r = new Random();
-            int n = 1000;
+            int n = 2000;
+            Console.WriteLine($"\n\n Compare Seq & Parallel for random matrix {n}x{n}");
             double[,] mat = new double[n, n];
             for (int i = 0; i < n; i++)
             {
