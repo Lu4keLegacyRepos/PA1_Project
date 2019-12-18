@@ -1,4 +1,6 @@
- //LUDecomposition_OpenMP.cpp : This file contains the 'main' function. Program execution begins and ends there.
+ //LUDecomposition_OpenMP.cpp 
+
+// !! Dolittle algorithm
 
 
 #include<string>
@@ -15,7 +17,7 @@
 
 using namespace std;
 
-ld a[n][n], lwr[n][n], upr[n][n];
+ld input[n][n], lower[n][n], upper[n][n];
 int main() {
 	int i, j, k, nthreads, tid;
 
@@ -25,14 +27,14 @@ int main() {
 	{
 		for (j = 0; j < n; j++)
 		{
-			a[i][j] = 1 + rand();
+			input[i][j] = 1 + rand();
 		}
 	}
 
 	// Parallel
 	int b1 = 5;
 
-	#pragma omp parallel shared(lwr,upr,a,nthreads) private(tid,i,k,j)
+	#pragma omp parallel shared(lower,upper,input,nthreads) private(tid,i,k,j)
 	{
 		tid = omp_get_thread_num();
 		if (tid == 0) {
@@ -42,16 +44,16 @@ int main() {
 
 		for (k = 0; k < n; k++)
 		{
-			lwr[k][k] = 1;
+			lower[k][k] = 1;
 			#pragma omp for 
 			for (j = k; j < n; j++)
 			{
 				ld sum = 0;
 				for (int s = 0; s <= k - 1; s++)
 				{
-					sum += lwr[k][s] * upr[s][j];
+					sum += lower[k][s] * upper[s][j];
 				}
-				upr[k][j] = a[k][j] - sum;
+				upper[k][j] = input[k][j] - sum;
 			}
 			#pragma omp for 
 			for (i = k + 1; i < n; i++)
@@ -59,9 +61,9 @@ int main() {
 				ld sum = 0;
 				for (int s = 0; s <= k - 1; s++)
 				{
-					sum += lwr[i][s] * upr[s][k];
+					sum += lower[i][s] * upper[s][k];
 				}
-				lwr[i][k] = (a[i][k] - sum) / upr[k][k];
+				lower[i][k] = (input[i][k] - sum) / upper[k][k];
 			}
 		}
 	}
@@ -75,24 +77,24 @@ int main() {
 
 	for (k = 0; k < n; k++)
 	{
-		lwr[k][k] = 1;
+		lower[k][k] = 1;
 		for (j = k; j < n; j++)
 		{
 			ld sum = 0;
 			for (int s = 0; s <= k - 1; s++)
 			{
-				sum += lwr[k][s] * upr[s][j];
+				sum += lower[k][s] * upper[s][j];
 			}
-			upr[k][j] = a[k][j] - sum;
+			upper[k][j] = input[k][j] - sum;
 		}
 		for (i = k + 1; i < n; i++)
 		{
 			ld sum = 0;
 			for (int s = 0; s <= k - 1; s++)
 			{
-				sum += lwr[i][s] * upr[s][k];
+				sum += lower[i][s] * upper[s][k];
 			}
-			lwr[i][k] = (a[i][k] - sum) / upr[k][k];
+			lower[i][k] = (input[i][k] - sum) / upper[k][k];
 		}
 	}
 
