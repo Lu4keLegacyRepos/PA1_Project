@@ -12,6 +12,7 @@ namespace PA1_Project
             Console.WriteLine("Game of life");
             Thread.Sleep(1000);
             var game = new GameOfLife.GameOfLife(20, GameOfLife.Pattern.Pulsar, 30, 50)
+            //var game = new GameOfLife.GameOfLife(5000, GameOfLife.Pattern.Pulsar, 1000, 0)
                 .Start();
 
 
@@ -44,8 +45,9 @@ namespace PA1_Project
             sw.Stop();
             Console.WriteLine(sw.ElapsedMilliseconds + " ms  - Parallel");
 
+            sw.Reset();
             sw.Start();
-            lu.ComputeDecompositionSeq(mat, n);
+            lu.ComputeDecomposition(mat, n);
             sw.Stop();
             Console.WriteLine(sw.ElapsedMilliseconds + " ms  - Seq");
 

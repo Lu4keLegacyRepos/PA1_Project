@@ -21,7 +21,7 @@ namespace LUDecomposition
             {
                 for (int i = 0; i < matDim; i++)
                 {
-                    if (i <= j)
+                    if (j > i)
                     {
                         upper[i, j] = input[i, j];
                         for (int k = 0; k < i; k++)
@@ -47,6 +47,7 @@ namespace LUDecomposition
                 }
             });
         }
+
 
         public void ComputeDecompositionSeq(double[,] mat, int squareDimensionOfMat)
         {

@@ -46,6 +46,7 @@ namespace GameOfLife
 
         public void PrintWorld(int sleepInMS = 100)
         {
+            
             Thread.Sleep(sleepInMS);
             Console.Clear();
             for (int y = 0; y < Size; y++)
